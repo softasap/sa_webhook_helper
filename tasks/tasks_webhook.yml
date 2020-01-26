@@ -1,0 +1,67 @@
+---
+
+  - name: Webhook | Download distribution
+    get_url:
+       url: https://github.com/adnanh/webhook/releases/download/2.6.11/webhook-linux-amd64.tar.gz
+       dest: /tmp/webhook-linux-amd64.tar.gz
+    become: yes
+    tags:
+      - webhook
+
+  - name: Webhook | unpack distribution
+    unarchive:
+      src: "/tmp/webhook-linux-amd64.tar.gz"
+      dest: "{{ webhook_dir }}"
+      remote_src: yes
+    become: yes
+    tags:
+      - webhook
+
+  - name: Webhook | link dir
+    file:
+      src: "{{ webhook_dir }}/webhook-linux-amd64/"
+      dest: "{{ webhook_dir }}/current"
+      owner: "root"
+      group: "{{ root }}"
+      state: link
+    become: yes
+    tags:
+      - webhook
+
+  - name: Webhook | Create upstart
+    template:
+      src: "templates/webhook/webhook.conf.j2"
+      dest: /etc/init/webhook-helper.conf
+      mode: 0644
+    when: upstart_system == "upstart" and docker_test is not defined
+    become: yes
+    tags:
+      - webhook
+
+  - name: Webhook | Create systemd service
+    template:
+      src: "templates/webhook/webhook.service.j2"
+      dest: /etc/systemd/system/webhook-helper.service
+      mode: 0644
+    when: upstart_system == "systemd" and docker_test is not defined
+    become: yes
+    tags:
+      - webhook
+
+  - name: Webhook | hooks definition
+    template:
+      src: "templates/webhook/hooks.json.j2"
+      dest: "{{ webhook_dir }}/hooks.json"
+    become: yes
+    tags:
+      - webhook
+
+  - name: Webhook | Restart
+    service:
+      name: webhook-helper
+      state: restarted
+      enabled: yes
+    when: upstart_system == "systemd" and docker_test is not defined
+    become: yes
+    tags:
+      - webhook

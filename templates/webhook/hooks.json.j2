@@ -1,0 +1,22 @@
+[
+  {
+    "id": "webhook",
+    "execute-command": "hostname",
+    "command-working-directory": "/tmp",
+    "pass-arguments-to-command":
+    [
+      {
+        "source": "payload",
+        "name": "param"
+      }
+    ],
+    "trigger-rule":
+    {
+      "match":
+      {
+        "type": "ip-whitelist",
+        "ip-range": "104.192.143.0/24"
+      }
+    }
+  }
+]

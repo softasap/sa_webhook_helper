@@ -1,0 +1,16 @@
+description "Webhook Helper Daemon"
+
+start on runlevel [2345]
+stop on runlevel [016]
+
+console log
+
+env PID=/var/run/webhook.pid
+env USER={{ webhook_user | default('nobody') }}
+env BIN={{ webhook_binary }}
+env WEBHOOK_OPTS="{{ webhook_params | default("") }} {{ webhook_internal_params }}"
+{% for key in webhook_env|default({}) %}
+env {{ key }}={{ webhook_env[key] }}
+{% endfor %}
+
+exec start-stop-daemon --start --quiet --make-pidfile --pidfile ${PID} --exec ${BIN} ${WEBHOOK_OPTS}

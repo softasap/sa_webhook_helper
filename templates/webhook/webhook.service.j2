@@ -1,0 +1,20 @@
+[Unit]
+Description=Webhook Helper Daemon
+After=network.target
+
+[Service]
+{% for key in webhook_env|default({}) %}
+Environment="{{ key }}={{ webhook_env[key] }}"
+{% endfor %}
+Environment="WEBHOOK_OPTS={{ webhook_params | default("") }} {{ webhook_internal_params }}"
+User={{ webhook_user | default('nobody') }}
+ExecStart=/bin/bash --login -c "{{ webhook_binary }} ${WEBHOOK_OPTS}"
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+StandardOutput=journal
+
+[Install]
+WantedBy=multi-user.target

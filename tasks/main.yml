@@ -1,0 +1,5 @@
+---
+# tasks file for sa_webhook_helper
+  - include_tasks: __detect_init_system.yml
+
+  - include_tasks: tasks_webhook.yml
