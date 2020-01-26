@@ -2,7 +2,7 @@
 
   - name: Webhook | Download distribution
     get_url:
-       url: https://github.com/adnanh/webhook/releases/download/2.6.11/webhook-linux-amd64.tar.gz
+       url: https://github.com/adnanh/webhook/releases/download/{{ webhook_version }}/webhook-linux-amd64.tar.gz
        dest: /tmp/webhook-linux-amd64.tar.gz
     become: yes
     tags:

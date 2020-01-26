@@ -1,6 +1,6 @@
 ---
 # defaults file for sa_webhook_helper
-  webhook_version: 1.0.0
+  webhook_version: 2.6.11
   webhook_port: 9000
   webhook_listen: 0.0.0.0
   webhook_config_file: "{{ webhook_dir }}/hooks.json"

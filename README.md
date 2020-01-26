@@ -18,10 +18,25 @@ Simple
 
      - {
          role: "sa_webhook_helper",
-         webhook_version: "2.6.11"
        }
 
 ```
+
+```YAML
+
+
+     - {
+         role: "sa_webhook_helper",
+         webhook_version: 2.6.11,
+         webhook_port: 9000,
+         webhook_listen: 0.0.0.0
+       }
+
+```
+
+
+
+
 
 Webhook binary parameters
 
