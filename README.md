@@ -1,7 +1,7 @@
 sa_webhook_helper
 =================
 
-[![Build Status](https://travis-ci.org/softasap/sa_webhook_helper.svg?branch=master)](https://travis-ci.org/softasap/sa_webhook_helper)
+[![Build Status](https://travis-ci.com/softasap/sa_webhook_helper.svg?branch=master)](https://travis-ci.com/softasap/sa_webhook_helper)
 
 
 Role to install webhook helper on unix based box
