@@ -8,6 +8,14 @@
     tags:
       - webhook
 
+  - name: Webhook | Create installation dir
+    file:
+       path: "{{ webhook_dir }}"
+       state: directory
+    become: yes
+    tags:
+      - webhook
+
   - name: Webhook | unpack distribution
     unarchive:
       src: "/tmp/webhook-linux-amd64.tar.gz"
