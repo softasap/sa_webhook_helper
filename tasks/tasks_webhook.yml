@@ -30,7 +30,7 @@
       src: "{{ webhook_dir }}/webhook-linux-amd64/"
       dest: "{{ webhook_dir }}/current"
       owner: "root"
-      group: "{{ root }}"
+      group: "root"
       state: link
     become: yes
     tags:
