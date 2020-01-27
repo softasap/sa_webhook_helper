@@ -60,6 +60,122 @@ Webhook binary parameters
 ```
 
 
+Consuming webhooks
+------------------
+
+### Limit by ID
+
+```json
+
+  {
+    "id": "dateip",
+    "execute-command": "date",
+    "command-working-directory": "/tmp",
+    "include-command-output-in-response": true,
+    "include-command-output-in-response-on-error": true,
+    "response-message": "Executing dateip script",
+    "pass-arguments-to-command":
+    [
+    ],
+    "trigger-rule":
+    {
+      "match":
+      {
+        "type": "ip-whitelist",
+        "ip-range": "192.168.88.1/24"
+      }
+    }
+  },
+```
+
+
+### Limit by header
+
+```json
+
+  {
+    "id": "dateheader",
+    "execute-command": "date",
+    "command-working-directory": "/tmp",
+    "include-command-output-in-response": true,
+    "include-command-output-in-response-on-error": true,
+    "response-message": "Executing dateip script",
+    "pass-arguments-to-command":
+    [
+    ],
+    "trigger-rule":
+    {
+      "match":
+      {
+        "type": "value",
+        "value": "SOMETOKEN",
+        "parameter":
+        {
+          "source": "header",
+          "name": "X-Cypress-Token"
+        }
+      }
+    }
+  }
+
+```
+
+```sh
+
+curl -i -H "X-Cypress-Token: SOMETOKEN" http://192.168.88.11:9000/hooks/dateheader
+
+HTTP/1.1 200 OK
+Date: Mon, 27 Jan 2020 11:49:48 GMT
+Content-Length: 29
+Content-Type: text/plain; charset=utf-8
+
+Mon Jan 27 11:49:48 UTC 2020
+```
+
+### Dummy hook with limit by get parameter
+
+```json
+
+  {
+    "id": "dateget",
+    "execute-command": "date",
+    "response-message": "Executing simple webhook...",
+    "include-command-output-in-response": true,
+    "include-command-output-in-response-on-error": true,
+    "trigger-rule":
+    {
+      "match":
+      {
+        "type": "value",
+        "value": "42",
+        "parameter":
+        {
+          "source": "url",
+          "name": "token"
+        }
+      }
+    }
+  }
+
+```
+
+```sh
+curl -i http://192.168.88.11:9000/hooks/dateget?token=42
+
+HTTP/1.1 200 OK
+Date: Mon, 27 Jan 2020 12:12:15 GMT
+Content-Length: 29
+Content-Type: text/plain; charset=utf-8
+
+Mon Jan 27 12:12:15 UTC 2020
+
+```
+
+More notes on webhook configurations
+
+https://github.com/adnanh/webhook/tree/master/docs
+
+
 Usage with ansible galaxy workflow
 ----------------------------------
 
