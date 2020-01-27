@@ -1,22 +1,67 @@
 [
   {
-    "id": "webhook",
-    "execute-command": "hostname",
+    "id": "dateip",
+    "execute-command": "date",
     "command-working-directory": "/tmp",
+    "include-command-output-in-response": true,
+    "include-command-output-in-response-on-error": true,
+    "response-message": "Executing dateip script",
     "pass-arguments-to-command":
     [
-      {
-        "source": "payload",
-        "name": "param"
-      }
     ],
     "trigger-rule":
     {
       "match":
       {
         "type": "ip-whitelist",
-        "ip-range": "104.192.143.0/24"
+        "ip-range": "192.168.88.1/24"
+      }
+    }
+  },
+  {
+    "id": "dateheader",
+    "execute-command": "date",
+    "command-working-directory": "/tmp",
+    "include-command-output-in-response": true,
+    "include-command-output-in-response-on-error": true,
+    "response-message": "Executing dateip script",
+    "pass-arguments-to-command":
+    [
+    ],
+    "trigger-rule":
+    {
+      "match":
+      {
+        "type": "value",
+        "value": "SOMETOKEN",
+        "parameter":
+        {
+          "source": "header",
+          "name": "X-Cypress-Token"
+        }
+      }
+    }
+  },
+  {
+    "id": "dateget",
+    "execute-command": "date",
+    "response-message": "Executing simple webhook...",
+    "include-command-output-in-response": true,
+    "include-command-output-in-response-on-error": true,
+    "trigger-rule":
+    {
+      "match":
+      {
+        "type": "value",
+        "value": "42",
+        "parameter":
+        {
+          "source": "url",
+          "name": "token"
+        }
       }
     }
   }
+
+
 ]
