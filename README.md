@@ -28,7 +28,7 @@ Simple
      - {
          role: "sa_webhook_helper",
          webhook_version: 2.6.11,
-         webhook_port: 9000,
+         webhook_port: 8999,
          webhook_listen: 0.0.0.0
        }
 
@@ -188,7 +188,7 @@ location /cypress/ {
     proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header        X-Forwarded-Proto $scheme;
 
-    proxy_pass          http://localhost:9000;
+    proxy_pass          http://localhost:8999;
     proxy_read_timeout  900;
 
     rewrite  ^/cypress/(.*)  /$1 break;
