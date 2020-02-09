@@ -28,7 +28,7 @@ Simple
      - {
          role: "sa_webhook_helper",
          webhook_version: 2.6.11,
-         webhook_port: 9000,
+         webhook_port: 8999,
          webhook_listen: 0.0.0.0
        }
 
@@ -174,6 +174,26 @@ Mon Jan 27 12:12:15 UTC 2020
 More notes on webhook configurations
 
 https://github.com/adnanh/webhook/tree/master/docs
+
+
+You can either expose services directly on configured port,
+or wrap it to some virtual folder of your webserver, for example, nginx:
+
+```conf
+
+location /cypress/ {
+
+    proxy_set_header        Host $host;
+    proxy_set_header        X-Real-IP $remote_addr;
+    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header        X-Forwarded-Proto $scheme;
+
+    proxy_pass          http://localhost:8999;
+    proxy_read_timeout  900;
+
+    rewrite  ^/cypress/(.*)  /$1 break;
+}
+```
 
 
 Usage with ansible galaxy workflow
