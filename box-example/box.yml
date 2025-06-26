@@ -1,45 +1,46 @@
 ---
-- hosts: www
-  gather_facts: False
+- name: Configure webhook server
+  hosts: www
+  gather_facts: false
 
   vars:
     root_dir: "{{ playbook_dir }}"
     shared_dir: "{{ playbook_dir }}/../shared"
 
-
   pre_tasks:
-    - ansible.builtin.debug: msg="Pre tasks section"
+    - name: Display pre-tasks message
+      ansible.builtin.debug:
+        msg: "Pre tasks section"
 
     - name: ANSIBLE PYTHON | install python fallback if needed
-      raw: test -e /usr/bin/python || test -e /usr/bin/python3 || (apt -qqy update && apt install -qy python-minimal)
+      ansible.builtin.raw: test -e /usr/bin/python || test -e /usr/bin/python3 || (apt -qqy update && apt install -qy python-minimal)
+      changed_when: false
       become: true
 
-    - name:  UNPRIVILEGED USERS | Get acl dependency (ansible unprivileged user operations magic)
-      ansible.builtin.apt: pkg="acl"
+    - name: UNPRIVILEGED USERS | Get acl dependency
+      ansible.builtin.apt:
+        name: acl
       become: true
 
-    - name: gather facts
-      setup:
+    - name: Gather facts
+      ansible.builtin.setup:
 
     - name: Check for common pretasks
-      local_action: stat path="{{shared_dir}}/common_pretasks.yml"
+      ansible.builtin.stat:
+        path: "{{ shared_dir }}/common_pretasks.yml"
+      delegate_to: localhost
       register: common_pretasks_exists
       tags: always
 
     - name: Include common pretasks
-      ansible.builtin.include_tasks: "{{shared_dir}}/common_pretasks.yml"
-      when: common_pretasks_exists.stat.exists == true
+      ansible.builtin.include_tasks: "{{ shared_dir }}/common_pretasks.yml"
+      when: common_pretasks_exists.stat.exists
       tags: always
 
-
   roles:
-
-    - {
-        role: "sa_webhook_helper"
-      }
-
+    - role: sa_webhook_helper
 
   tasks:
-
-    - ansible.builtin.debug: msg="Tasks section"
-
+    - name: Display tasks message
+      ansible.builtin.debug:
+        msg: "Tasks section"
