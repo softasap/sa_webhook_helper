@@ -1,13 +1,11 @@
 ---
 # defaults file for sa_webhook_helper
-  webhook_version: 2.6.11
-  webhook_port: 8999
-  webhook_listen: 0.0.0.0
-  webhook_config_file: "{{ webhook_dir }}/hooks.json"
-  webhook_env: {}
-  webhook_params: ""
-  webhook_internal_params: "-ip {{ webhook_listen }} --port {{ webhook_port }} -verbose -hooks {{ webhook_config_file }}"
-  webhook_dir: /opt/webhook-helper
-  webhook_binary: /opt/webhook-helper/current/webhook
-
-
+webhook_version: 2.8.2
+webhook_port: 8999
+webhook_listen: 0.0.0.0
+webhook_config_file: "{{ webhook_dir }}/hooks.json"
+webhook_env: {}
+webhook_params: ""
+webhook_internal_params: "-ip {{ webhook_listen }} --port {{ webhook_port }} -verbose -hooks {{ webhook_config_file }}"
+webhook_dir: /opt/webhook-helper
+webhook_binary: /opt/webhook-helper/current/webhook

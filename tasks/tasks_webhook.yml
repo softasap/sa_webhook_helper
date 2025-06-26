@@ -1,75 +1,78 @@
 ---
 
   - name: Webhook | Download distribution
-    get_url:
-       url: https://github.com/adnanh/webhook/releases/download/{{ webhook_version }}/webhook-linux-amd64.tar.gz
-       dest: /tmp/webhook-linux-amd64.tar.gz
-    become: yes
+    ansible.builtin.get_url:
+      url: https://github.com/adnanh/webhook/releases/download/{{ webhook_version }}/webhook-linux-amd64.tar.gz
+      dest: /tmp/webhook-linux-amd64.tar.gz
+      mode: '0600'
+    become: true
     tags:
       - webhook
 
   - name: Webhook | Create installation dir
-    file:
-       path: "{{ webhook_dir }}"
-       state: directory
-    become: yes
+    ansible.builtin.file:
+      path: "{{ webhook_dir }}"
+      state: directory
+      mode: '0755'
+    become: true
     tags:
       - webhook
 
   - name: Webhook | unpack distribution
-    unarchive:
+    ansible.builtin.unarchive:
       src: "/tmp/webhook-linux-amd64.tar.gz"
       dest: "{{ webhook_dir }}"
       remote_src: yes
-    become: yes
+    become: true
     tags:
       - webhook
 
   - name: Webhook | link dir
-    file:
+    ansible.builtin.file:
       src: "{{ webhook_dir }}/webhook-linux-amd64/"
       dest: "{{ webhook_dir }}/current"
       owner: "root"
       group: "root"
       state: link
-    become: yes
+    become: true
     tags:
       - webhook
 
   - name: Webhook | Create upstart
-    template:
+    ansible.builtin.template:
       src: "templates/webhook/webhook.conf.j2"
       dest: /etc/init/webhook-helper.conf
-      mode: 0644
+      mode: '0644'
     when: upstart_system == "upstart" and docker_test is not defined
-    become: yes
+    become: true
     tags:
       - webhook
 
   - name: Webhook | Create systemd service
-    template:
+    ansible.builtin.template:
       src: "templates/webhook/webhook.service.j2"
       dest: /etc/systemd/system/webhook-helper.service
-      mode: 0644
+      mode: '0644'
     when: upstart_system == "systemd" and docker_test is not defined
-    become: yes
+    become: true
     tags:
       - webhook
 
   - name: Webhook | hooks definition
-    template:
+    ansible.builtin.template:
       src: "templates/webhook/hooks.json.j2"
       dest: "{{ webhook_dir }}/hooks.json"
-    become: yes
+      mode: '0600'
+    become: true
     tags:
       - webhook
 
   - name: Webhook | Restart
-    service:
+    ansible.builtin.service:
       name: webhook-helper
       state: restarted
       enabled: yes
     when: upstart_system == "systemd" and docker_test is not defined
-    become: yes
+    become: true
     tags:
       - webhook

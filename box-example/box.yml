@@ -8,15 +8,15 @@
 
 
   pre_tasks:
-    - debug: msg="Pre tasks section"
+    - ansible.builtin.debug: msg="Pre tasks section"
 
     - name: ANSIBLE PYTHON | install python fallback if needed
       raw: test -e /usr/bin/python || test -e /usr/bin/python3 || (apt -qqy update && apt install -qy python-minimal)
-      become: yes
+      become: true
 
     - name:  UNPRIVILEGED USERS | Get acl dependency (ansible unprivileged user operations magic)
-      apt: pkg="acl"
-      become: yes
+      ansible.builtin.apt: pkg="acl"
+      become: true
 
     - name: gather facts
       setup:
@@ -27,7 +27,7 @@
       tags: always
 
     - name: Include common pretasks
-      include_tasks: "{{shared_dir}}/common_pretasks.yml"
+      ansible.builtin.include_tasks: "{{shared_dir}}/common_pretasks.yml"
       when: common_pretasks_exists.stat.exists == true
       tags: always
 
@@ -41,5 +41,5 @@
 
   tasks:
 
-    - debug: msg="Tasks section"
+    - ansible.builtin.debug: msg="Tasks section"
 

@@ -1,5 +1,7 @@
 ---
 # tasks file for sa_webhook_helper
-  - include_tasks: __detect_init_system.yml
+- name: Include init system detection tasks
+  ansible.builtin.include_tasks: __detect_init_system.yml
 
-  - include_tasks: tasks_webhook.yml
+- name: Include webhook setup tasks
+  ansible.builtin.include_tasks: tasks_webhook.yml
