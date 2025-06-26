@@ -3,8 +3,8 @@
   gather_facts: False
 
   vars:
-    - root_dir: "{{ playbook_dir }}"
-    - shared_dir: "{{ playbook_dir }}/../shared"
+    root_dir: "{{ playbook_dir }}"
+    shared_dir: "{{ playbook_dir }}/../shared"
 
 
   pre_tasks:
@@ -34,9 +34,9 @@
 
   roles:
 
-     - {
+    - {
         role: "sa_webhook_helper"
-       }
+      }
 
 
   tasks:

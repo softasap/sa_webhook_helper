@@ -7,7 +7,7 @@
     else echo {{ ansible_service_mgr | default('UNKNOWN') }};
     fi
   become: true
-  changed_when: False
+  changed_when: false
   args:
     executable: /bin/bash
   register: upstart_detect_raw
