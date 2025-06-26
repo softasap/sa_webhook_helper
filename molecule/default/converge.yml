@@ -1,0 +1,22 @@
+---
+- name: Converge
+  hosts: all
+
+  pre_tasks:
+    - name: Pre tasks debug
+      ansible.builtin.debug:
+        msg: "Pre tasks section for {{ ansible_host }}"
+
+    - name: Set default facts
+      ansible.builtin.set_fact:
+        remote_ip_address: "{{ ansible_host }}"
+
+    - name: Include default vars
+      ansible.builtin.include_vars:
+        file: "vars/molecule_vars.yml"
+
+  roles:
+    - role: sa_webhook_helper
+
+  # - name: Apply box play
+  #   ansible.builtin.import_playbook: ../../playbook.yml

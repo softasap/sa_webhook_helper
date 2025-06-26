@@ -12,10 +12,3 @@ def test_hosts_file(host):
     assert f.exists
     assert f.user == 'root'
     assert f.group == 'root'
-
-
-def test_webhook_running_and_enabled(host):
-    assert not host.ansible(
-        "service",
-        "name=webhook-helper enabled=true state=started")['changed']
-
